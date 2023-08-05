@@ -20,10 +20,10 @@ def create_table():
     cur.execute('''
         CREATE TABLE IF NOT EXISTS rssi_data (
             id SERIAL PRIMARY KEY,
-            beacon1_rssi INTEGER NOT NULL,
-            beacon2_rssi INTEGER NOT NULL,
-            beacon3_rssi INTEGER NOT NULL,
-            beacon4_rssi INTEGER NOT NULL,
+            beaconA_rssi INTEGER NOT NULL,
+            beaconB_rssi INTEGER NOT NULL,
+            beaconC_rssi INTEGER NOT NULL,
+            beaconD_rssi INTEGER NOT NULL,
             counter INTEGER NOT NULL
         )
     ''')
@@ -35,13 +35,13 @@ def create_table():
 def save_rssi_data():
     data = request.get_json()
 
-    beacon1_rssi = data.get('beacon1_rssi')
-    beacon2_rssi = data.get('beacon2_rssi')
-    beacon3_rssi = data.get('beacon3_rssi')
-    beacon4_rssi = data.get('beacon4_rssi')
+    beaconA_rssi = data.get('beaconA_rssi')
+    beaconB_rssi = data.get('beaconB_rssi')
+    beaconC_rssi = data.get('beaconC_rssi')
+    beaconD_rssi = data.get('beaconD_rssi')
     counter = data.get('counter')
 
-    if None in [beacon1_rssi, beacon2_rssi, beacon3_rssi, beacon4_rssi, counter]:
+    if None in [beaconA_rssi, beaconB_rssi, beaconC_rssi, beaconD_rssi, counter]:
         return jsonify({'error': 'Todos os campos são obrigatórios'}), 400
 
     try:
@@ -49,7 +49,7 @@ def save_rssi_data():
         cur = conn.cursor()
 
         cur.execute('INSERT INTO rssi_data (beacon1_rssi, beacon2_rssi, beacon3_rssi, beacon4_rssi, counter) VALUES (%s, %s, %s, %s, %s)',
-                    (beacon1_rssi, beacon2_rssi, beacon3_rssi, beacon4_rssi, counter))
+                    (beaconA_rssi, beaconB_rssi, beaconC_rssi, beaconD_rssi, counter))
 
         conn.commit()
         cur.close()
