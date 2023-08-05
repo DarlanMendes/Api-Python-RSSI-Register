@@ -48,7 +48,7 @@ def save_rssi_data():
         conn = psycopg2.connect(host=db_host, dbname=db_name, user=db_user, password=db_password)
         cur = conn.cursor()
 
-        cur.execute('INSERT INTO rssi_data (beacon1_rssi, beacon2_rssi, beacon3_rssi, beacon4_rssi, counter) VALUES (%s, %s, %s, %s, %s)',
+        cur.execute('INSERT INTO rssi_data (beaconA_rssi, beaconB_rssi, beaconC_rssi, beaconD_rssi, counter) VALUES (%s, %s, %s, %s, %s)',
                     (beaconA_rssi, beaconB_rssi, beaconC_rssi, beaconD_rssi, counter))
 
         conn.commit()
