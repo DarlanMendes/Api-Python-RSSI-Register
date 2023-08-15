@@ -24,7 +24,7 @@ def create_table():
             beaconB_rssi INTEGER NOT NULL,
             beaconC_rssi INTEGER NOT NULL,
             beaconD_rssi INTEGER NOT NULL,
-            counter INTEGER NOT NULL
+            quadrante INTEGER NOT NULL
         )
     ''')
     conn.commit()
@@ -39,17 +39,17 @@ def save_rssi_data():
     beaconB_rssi = data.get('beaconB_rssi')
     beaconC_rssi = data.get('beaconC_rssi')
     beaconD_rssi = data.get('beaconD_rssi')
-    counter = data.get('counter')
+    quadrante = data.get('quadrante')
 
-    if None in [beaconA_rssi, beaconB_rssi, beaconC_rssi, beaconD_rssi, counter]:
+    if None in [beaconA_rssi, beaconB_rssi, beaconC_rssi, beaconD_rssi, quadrante]:
         return jsonify({'error': 'Todos os campos são obrigatórios'}), 400
 
     try:
         conn = psycopg2.connect(host=db_host, dbname=db_name, user=db_user, password=db_password)
         cur = conn.cursor()
 
-        cur.execute('INSERT INTO rssi_data (beaconA_rssi, beaconB_rssi, beaconC_rssi, beaconD_rssi, counter) VALUES (%s, %s, %s, %s, %s)',
-                    (beaconA_rssi, beaconB_rssi, beaconC_rssi, beaconD_rssi, counter))
+        cur.execute('INSERT INTO rssi_data (beaconA_rssi, beaconB_rssi, beaconC_rssi, beaconD_rssi, quadrante) VALUES (%s, %s, %s, %s, %s)',
+                    (beaconA_rssi, beaconB_rssi, beaconC_rssi, beaconD_rssi, quadrante))
 
         conn.commit()
         cur.close()
@@ -60,6 +60,8 @@ def save_rssi_data():
     except Exception as e:
         return jsonify({'error': 'Erro ao salvar os dados no banco de dados'}), 500
 
+
+    
 if __name__ == '__main__':
     create_table()
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)
